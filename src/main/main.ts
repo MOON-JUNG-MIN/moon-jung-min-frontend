@@ -95,10 +95,12 @@ const createWindow = async () => {
     autoHideMenuBar: true,
     frame: false,
     webPreferences: {
+      nodeIntegration: true,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
       zoomFactor: 10,
+      webSecurity: false,
     },
   });
   mainWindow.on('close', (e) => {
