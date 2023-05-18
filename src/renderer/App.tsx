@@ -3,7 +3,8 @@ import TitleBar from 'components/titlebar';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { GlobalStyle } from 'style/GlobalStyle';
 import styled from 'styled-components';
-import Main from './pages/main';
+import Main from './components/main';
+import CardView from './components/cardview';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -24,6 +25,7 @@ export default function App() {
           <Body>
             <Routes>
               <Route path="/" element={<Main />} />
+              <Route path="/cardview" element={<CardView />} />
             </Routes>
           </Body>
         </MemoryRouter>
