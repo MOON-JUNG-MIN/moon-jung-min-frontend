@@ -6,5 +6,7 @@ export const GlobalStyle = createGlobalStyle`
     background-color:rgba(0,0,0,0);
     padding:0px;
     margin:0px;
+    text-decoration: none;
+    color: inherit;
 }
 `;
