@@ -7,7 +7,7 @@ import styled from 'styled-components';
 export default function Main() {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get('code');
-  const isLogin = localStorage.getItem('access_token') ? true : false;
+  const isLogin = !!localStorage.getItem('access_token');
   const { mutate } = useLogin({
     code: code || '',
     device_token: 'mdmdmdmd',
@@ -16,7 +16,7 @@ export default function Main() {
     if (code && !localStorage.getItem('access_token')) {
       mutate();
     }
-  }, [code]);
+  }, [code, mutate]);
   return (
     <Wrapper>
       <Typography variant="h1">문 정 민</Typography>
