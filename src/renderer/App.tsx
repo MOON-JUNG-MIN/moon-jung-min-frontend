@@ -5,6 +5,7 @@ import { GlobalStyle } from 'style/GlobalStyle';
 import styled from 'styled-components';
 import Main from './components/main';
 import CardView from './components/cardview';
+import WritePage from './pages/Write';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -26,6 +27,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/cardview" element={<CardView />} />
+              <Route path="/write" element={<WritePage />} />
             </Routes>
           </Body>
         </MemoryRouter>
