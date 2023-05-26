@@ -2,8 +2,8 @@ import { Button, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLogin } from 'renderer/apis/user';
-import Background from '../../../../assets/main/title.png';
 import styled from 'styled-components';
+import Background from '../../../../assets/main/title.png';
 
 export default function Main() {
   const urlParams = new URLSearchParams(window.location.search);
