@@ -1,7 +1,7 @@
 import { Button, Input } from '@mui/material';
 import styled from 'styled-components';
 
-const LoginModal = () => {
+function LoginModal() {
   return (
     <Wrapper>
       <Button type="button" startIcon={<div>asd</div>} size="small">
@@ -9,7 +9,7 @@ const LoginModal = () => {
       </Button>
     </Wrapper>
   );
-};
+}
 
 export default LoginModal;
 
