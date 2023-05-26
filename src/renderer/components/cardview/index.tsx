@@ -9,7 +9,6 @@ export default function CardView() {
   const [state, setState] = useRecoilState(bukkitState);
   return (
     <Wrapper>
-      <Link to="/write">글쓰러 가기</Link>
       <CardGrid>
         {state.map((value) => (
           <RecipeReviewCard
