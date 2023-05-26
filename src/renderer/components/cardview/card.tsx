@@ -82,7 +82,11 @@ export default function RecipeReviewCard(props: BukkitType) {
           <div>
             {members.map((value) => (
               <Avatar>
-                <img src={value.image} alt={value.nickname} />
+                <img
+                  key={value.nickname}
+                  src={value.image}
+                  alt={value.nickname}
+                />
               </Avatar>
             ))}
           </div>

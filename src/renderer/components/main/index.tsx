@@ -2,6 +2,7 @@ import { Button, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLogin } from 'renderer/apis/user';
+import Background from '../../../../assets/main/title.png';
 import styled from 'styled-components';
 
 export default function Main() {
@@ -18,8 +19,7 @@ export default function Main() {
     }
   }, [code, mutate]);
   return (
-    <Wrapper>
-      <Typography variant="h1">문 정 민</Typography>
+    <Wrapper style={{ backgroundImage: `url(${Background})` }}>
       <Button variant="contained" size="large" type="button" color="info">
         <Link
           to={
@@ -40,8 +40,15 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: white;
+  background-size: 100%;
+  background-position-y: -200px;
+  position: relative;
+  > button {
+    width: 200px;
+    position: absolute;
+    bottom: 160px;
+  }
 `;

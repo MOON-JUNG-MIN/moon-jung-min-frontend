@@ -10,8 +10,9 @@ export default function CardView() {
   return (
     <Wrapper>
       <CardGrid>
-        {state.map((value) => (
+        {state.map((value, index) => (
           <RecipeReviewCard
+            key={value.id}
             id={value.id}
             title={value.title}
             content={value.content}
