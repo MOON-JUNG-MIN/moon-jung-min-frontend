@@ -13,11 +13,11 @@ import {
   Modal,
   Box,
 } from '@mui/material';
-import { BukkitType } from 'atom/store';
+import { BucketItem } from 'atom/store';
 import { useState } from 'react';
 import More from '../../../../assets/card/more.svg';
 
-export default function RecipeReviewCard(props: BukkitType) {
+export default function RecipeReviewCard(props: BucketItem) {
   const {
     content,
     id,
@@ -142,6 +142,8 @@ export default function RecipeReviewCard(props: BukkitType) {
                     key={value.nickname}
                     src={value.image}
                     alt={value.nickname}
+                    width={40}
+                    height={40}
                   />
                 </Avatar>
               ))}

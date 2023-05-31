@@ -1,10 +1,12 @@
 import { Button, Input, TextareaAutosize, Typography } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Bucket, createBucket } from 'renderer/apis/bucket';
 import { useImage } from 'renderer/apis/image';
 import styled from 'styled-components';
 
 export default function WritePage() {
+  const navigate = useNavigate();
   const [bucket, setBucket] = useState<Bucket>({
     title: '',
     content: '',
@@ -29,11 +31,16 @@ export default function WritePage() {
     });
   };
   const create = () => {
-    createBucket(bucket);
+    createBucket(bucket).then(() => {
+      navigate('/cardview');
+    });
   };
 
   return (
     <Wrapper>
+      <GoToBack variant="text" onClick={() => navigate('/cardview')}>
+        뒤로 가기
+      </GoToBack>
       <Typography variant="h3" color="#0288d1" style={{ textAlign: 'center' }}>
         버킷 생성하기
       </Typography>
@@ -87,4 +94,10 @@ const TextArea = styled(TextareaAutosize)`
   outline: none;
   font: inherit;
   resize: none;
+`;
+
+const GoToBack = styled(Button)`
+  position: absolute !important;
+  top: 80px;
+  left: 50px;
 `;
