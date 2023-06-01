@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 export default function CardView() {
   const [state, setState] = useRecoilState<BucketItem[]>(bukkitState);
-  console.log(state);
+
   useEffect(() => {
     instance
       .get<{ bucket_list: BucketItem[] }>('/bucket')
