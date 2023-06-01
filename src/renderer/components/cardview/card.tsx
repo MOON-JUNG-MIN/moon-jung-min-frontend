@@ -67,10 +67,13 @@ export default function RecipeReviewCard(props: BucketItem) {
             {start_date} ~ {target_date}
           </Typography>
           <Typography
+            component="pre"
             id="modal-modal-description"
             sx={{ mt: 2, wordBreak: 'break-word' }}
             style={{
               marginTop: '12px',
+              whiteSpace: 'pre-wrap',
+              overflow: 'auto',
             }}
           >
             {content}
