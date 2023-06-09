@@ -16,6 +16,7 @@ import {
 import { BucketItem } from 'atom/store';
 import { useState } from 'react';
 import More from '../../../../assets/card/more.svg';
+import Chat from '../chat';
 
 export default function RecipeReviewCard(props: BucketItem) {
   const {
@@ -27,6 +28,8 @@ export default function RecipeReviewCard(props: BucketItem) {
     start_date,
     target_date,
     title,
+    room_id,
+    room_name,
   } = props;
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -66,6 +69,7 @@ export default function RecipeReviewCard(props: BucketItem) {
           >
             {content}
           </Typography>
+          <Chat roomId={room_id} />
         </Box>
       </Modal>
       <Card
@@ -137,9 +141,8 @@ export default function RecipeReviewCard(props: BucketItem) {
             <p>참여자 명단</p>
             <div>
               {members.map((value) => (
-                <Avatar>
+                <Avatar key={value.nickname}>
                   <img
-                    key={value.nickname}
                     src={value.image}
                     alt={value.nickname}
                     width={40}

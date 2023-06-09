@@ -1,20 +1,21 @@
 import { useRecoilState } from 'recoil';
 import { BucketItem, bukkitState } from 'atom/store';
 import styled from 'styled-components';
-import RecipeReviewCard from './card';
+import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { instance } from 'renderer/apis/axios';
-import { Link } from 'react-router-dom';
+import RecipeReviewCard from './card';
 
 export default function CardView() {
   const [state, setState] = useRecoilState<BucketItem[]>(bukkitState);
   console.log(state);
   useEffect(() => {
+    // eslint-disable-next-line promise/catch-or-return
     instance
       .get<{ bucket_list: BucketItem[] }>('/bucket')
       .then((res) => setState(res.data.bucket_list));
-  }, []);
+  }, [setState]);
 
   return (
     <Wrapper>
@@ -31,6 +32,8 @@ export default function CardView() {
             is_end={value.is_end}
             start_date={value.start_date}
             members={value.members}
+            room_id={value.room_id}
+            room_name={value.room_name}
           />
         ))}
       </CardGrid>

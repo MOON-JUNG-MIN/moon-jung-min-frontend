@@ -8,6 +8,8 @@ export interface BucketItem {
   target_date: string; // YYYY-MM-DD
   is_end: boolean;
   start_date: string;
+  room_id: number;
+  room_name: string;
   members: {
     nickname: string;
     image: string;
