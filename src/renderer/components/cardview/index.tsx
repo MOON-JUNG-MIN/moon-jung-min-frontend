@@ -9,7 +9,7 @@ import RecipeReviewCard from './card';
 
 export default function CardView() {
   const [state, setState] = useRecoilState<BucketItem[]>(bukkitState);
-  console.log(state);
+
   useEffect(() => {
     // eslint-disable-next-line promise/catch-or-return
     instance

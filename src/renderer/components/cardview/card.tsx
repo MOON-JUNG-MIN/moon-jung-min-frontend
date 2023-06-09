@@ -60,12 +60,24 @@ export default function RecipeReviewCard(props: BucketItem) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {title}
           </Typography>
-          <Typography component="h3" sx={{ color: 'gray' }}>
+          <Typography
+            component="h3"
+            sx={{ color: 'gray' }}
+            style={{
+              marginTop: '4px',
+            }}
+          >
             {start_date} ~ {target_date}
           </Typography>
           <Typography
+            component="pre"
             id="modal-modal-description"
             sx={{ mt: 2, wordBreak: 'break-word' }}
+            style={{
+              marginTop: '12px',
+              whiteSpace: 'pre-wrap',
+              overflow: 'auto',
+            }}
           >
             {content}
           </Typography>
@@ -188,7 +200,8 @@ const Modalstyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 700,
+  minHeight: 400,
   bgcolor: 'background.paper',
   border: '1px solid #000',
   boxShadow: 24,
