@@ -7,6 +7,7 @@ import { RecoilRoot } from 'recoil';
 import Main from './components/main';
 import CardView from './components/cardview';
 import WritePage from './pages/Write';
+import PatchPage from './pages/Patch';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -30,6 +31,7 @@ export default function App() {
               <Route path="/" element={<Main />} />
               <Route path="/cardview" element={<CardView />} />
               <Route path="/write" element={<WritePage />} />
+              <Route path="/patch" element={<PatchPage />} />
             </Routes>
           </Body>
         </MemoryRouter>

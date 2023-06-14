@@ -12,10 +12,14 @@ import {
   MenuItem,
   Modal,
   Box,
+  css,
 } from '@mui/material';
 import { BucketItem } from 'atom/store';
 import { useState } from 'react';
 import More from '../../../../assets/card/more.svg';
+import { useMutation, useQuery } from 'react-query';
+import { instance } from 'renderer/apis/axios';
+import { useNavigate } from 'react-router-dom';
 import Chat from '../chat';
 
 export default function RecipeReviewCard(props: BucketItem) {
@@ -31,9 +35,9 @@ export default function RecipeReviewCard(props: BucketItem) {
     room_id,
     room_name,
   } = props;
-  const [openMenu, setOpenMenu] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
   // eslint-disable-next-line no-undef
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -46,6 +50,27 @@ export default function RecipeReviewCard(props: BucketItem) {
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+
+  const { refetch } = useQuery(['getList'], () =>
+    instance.get<{ bucket_list: BucketItem[] }>('/bucket')
+  );
+
+  const { mutate: complete } = useMutation(
+    () => instance.put('/bucket/end/' + id),
+    {
+      onSuccess: () => refetch(),
+    }
+  );
+
+  const onClickComplete = () => {
+    complete();
+  };
+  const { mutate: deleteBucket } = useMutation(
+    () => instance.delete('/bucket/' + id),
+    {
+      onSuccess: () => refetch(),
+    }
+  );
 
   return (
     // 모달 추가할 것
@@ -84,7 +109,8 @@ export default function RecipeReviewCard(props: BucketItem) {
           <Chat roomId={room_id} />
         </Box>
       </Modal>
-      <Card
+      <BucketCard
+        isEnd={is_end}
         sx={{
           maxWidth: 345,
           width: 300,
@@ -94,6 +120,7 @@ export default function RecipeReviewCard(props: BucketItem) {
           handleModalOpen();
         }}
       >
+        <EndText className="endText">완료</EndText>
         <CardHeader
           avatar={
             <Avatar aria-label="recipe">
@@ -125,9 +152,30 @@ export default function RecipeReviewCard(props: BucketItem) {
                   'aria-labelledby': 'basic-button',
                 }}
               >
-                <MenuItem onClick={handleClose}>Edit</MenuItem>
-                <MenuItem onClick={handleClose}>Delete</MenuItem>
-                <MenuItem onClick={handleClose}>Complete</MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleClose;
+                    navigate('/patch?id=' + id);
+                  }}
+                >
+                  Edit
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleClose;
+                    deleteBucket();
+                  }}
+                >
+                  Delete
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleClose;
+                    onClickComplete();
+                  }}
+                >
+                  Complete
+                </MenuItem>
               </Menu>
             </>
           }
@@ -165,10 +213,35 @@ export default function RecipeReviewCard(props: BucketItem) {
             </div>
           </Members>
         </CardActions>
-      </Card>
+      </BucketCard>
     </>
   );
 }
+
+const BucketCard = styled(Card)<{
+  isEnd: boolean;
+}>`
+  position: relative;
+  ${(props) =>
+    props.isEnd &&
+    css`
+      background-color: rgba(0, 0, 0, 0.4);
+      .endText {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        color: white;
+        font-weight: bold;
+      }
+    `}
+`;
+
+const EndText = styled.p`
+  display: none;
+`;
 
 const Members = styled.div`
   border-top: 1px solid lightgray;
