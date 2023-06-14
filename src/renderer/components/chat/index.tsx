@@ -1,72 +1,142 @@
-import { Button } from '@mui/material';
-import { useEffect } from 'react';
+/* eslint-disable camelcase */
+import { Avatar, Button } from '@mui/material';
+import { LegacyRef, RefObject, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Client } from '@stomp/stompjs';
+import { readChat, sendChat } from 'renderer/apis/chat';
 
 interface Props {
   roomId: number;
 }
 
-const socketClient = new Client({
-  brokerURL: 'ws://bucket-mate-moon.p-e.kr:8081/ws/chat',
-  connectHeaders: {
-    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-    roomId: '7',
-  },
-  debug(str) {
-    console.log(str);
-  },
-  reconnectDelay: 5000, // 자동 재 연결
-  heartbeatIncoming: 4000,
-  heartbeatOutgoing: 4000,
-});
+interface ChatDataType {
+  message_id: number;
+  username: string;
+  profile_image: string;
+  message: string;
+  date: string;
+}
 
-socketClient.onConnect = function (frame) {
-  console.log(frame);
-};
-
-socketClient.onStompError = function (frame) {
-  console.log(`Broker reported error: ${frame.headers.message}`);
-  console.log(`Additional details: ${frame.body}`);
-};
-
-socketClient.activate();
+interface ChatType {
+  room_id: number;
+  room_name: string;
+  data: ChatDataType[];
+}
 
 export default function Chat({ roomId }: Props) {
-  const sendMessage = () => {
-    socketClient.publish({
-      destination: `/app/chat/message/${roomId}`,
-      body: JSON.stringify({
-        message: 'assd',
-      }),
+  const [inputData, setInputData] = useState('');
+  const [chatData, setData] = useState<ChatType>();
+  const Ref = useRef<LegacyRef<HTMLInputElement>>();
+  const sendMessage = (message: string) => {
+    sendChat(roomId, {
+      message,
     });
   };
 
   useEffect(() => {
-    const subscription = socketClient.subscribe(
-      `/topic/chat/room/${roomId}`,
-      (message) => {
-        console.log('Received : ', message);
-      }
-    );
+    const loop = setInterval(() => {
+      // eslint-disable-next-line promise/catch-or-return, promise/always-return
+      readChat(roomId).then((value) => {
+        setData(value.data);
+      });
+    }, 100);
     return () => {
-      subscription.unsubscribe();
+      clearInterval(loop);
     };
-  }, [roomId]);
-  const chatArr: string[] = [];
+  }, []);
   return (
     <Wrapper>
-      {chatArr.map((value) => (
-        <p>{value}</p>
-      ))}
-      <input type="text" />
-      <Button onClick={() => sendMessage()}>전송</Button>
+      <ChatWrapper>
+        {chatData?.data.map((value) => (
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          <ChatBox {...value} />
+        ))}
+        <div id="input">
+          <input
+            type="text"
+            value={inputData}
+            onChange={(e) => {
+              setInputData(e.currentTarget.value);
+            }}
+          />
+          <Button
+            onClick={() => {
+              sendMessage(inputData);
+              setInputData('');
+            }}
+            variant="contained"
+            size="large"
+            type="button"
+            color="info"
+          >
+            전송
+          </Button>
+        </div>
+      </ChatWrapper>
     </Wrapper>
   );
 }
 
+function ChatBox({
+  date,
+  message,
+  message_id,
+  profile_image,
+  username,
+}: ChatDataType) {
+  return (
+    <ChatBoxWrapper>
+      <div>
+        <Avatar aria-label="recipe">
+          <img src={profile_image} alt="" />
+        </Avatar>
+        {username}
+      </div>
+      <p>{message}</p>
+    </ChatBoxWrapper>
+  );
+}
+
 const Wrapper = styled.div`
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
+  > input {
+    height: 30px;
+  }
+`;
+
+const ChatWrapper = styled.div`
+  border: 1px solid black;
+  width: 300px;
+  height: 500px;
+  overflow-y: scroll;
+  position: relative;
+  #input {
+    background-color: white;
+    position: sticky;
+    bottom: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 420px;
+    > input {
+      width: 73%;
+    }
+  }
+`;
+
+const ChatBoxWrapper = styled.div`
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  > div {
+    display: flex;
+    font-size: 18px;
+    align-items: center;
+    gap: 10px;
+  }
+  > p {
+  }
 `;
