@@ -19,7 +19,10 @@ export default function Main() {
     }
   }, [code, mutate]);
   return (
-    <Wrapper style={{ backgroundImage: `url(${Background})` }}>
+    <Wrapper>
+      <Typography color="#0288d1" variant="h1" fontWeight="400">
+        버킷 메이트
+      </Typography>
       <Button variant="contained" size="large" type="button" color="info">
         <Link
           to={
@@ -40,15 +43,14 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   background-color: white;
-  background-size: 100%;
-  background-position-y: -200px;
   position: relative;
+
   > button {
+    margin-top: 60px;
     width: 200px;
-    position: absolute;
-    bottom: 160px;
   }
 `;
