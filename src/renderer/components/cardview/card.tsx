@@ -109,7 +109,11 @@ export default function RecipeReviewCard(props: BucketItem) {
           <img
             src={image}
             alt=""
-            style={{ width: '100%', border: '1px solid black' }}
+            style={{
+              width: '100%',
+              border: '1px solid black',
+              marginTop: '50px',
+            }}
           />
           <Chat roomId={room_id} />
         </Box>
