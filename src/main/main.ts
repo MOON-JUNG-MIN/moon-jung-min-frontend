@@ -202,6 +202,6 @@ app
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
-    webFrame.setZoomFactor(5);
+    webFrame.setZoomFactor(1);
   })
   .catch(console.log);
