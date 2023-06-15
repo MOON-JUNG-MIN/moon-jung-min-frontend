@@ -114,7 +114,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   #input {
     > input {
-      width: 88%;
+      width: 87%;
     }
     background-color: white;
     bottom: 0px;

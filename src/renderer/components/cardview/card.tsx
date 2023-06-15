@@ -106,6 +106,11 @@ export default function RecipeReviewCard(props: BucketItem) {
           >
             {content}
           </Typography>
+          <img
+            src={image}
+            alt=""
+            style={{ width: '100%', border: '1px solid black' }}
+          />
           <Chat roomId={room_id} />
         </Box>
       </Modal>
@@ -122,11 +127,6 @@ export default function RecipeReviewCard(props: BucketItem) {
       >
         <EndText className="endText">완료</EndText>
         <CardHeader
-          avatar={
-            <Avatar aria-label="recipe">
-              <img src={image} alt="" />
-            </Avatar>
-          }
           action={
             <>
               <IconButton
@@ -275,6 +275,8 @@ const Modalstyle = {
   transform: 'translate(-50%, -50%)',
   width: 700,
   minHeight: 400,
+  maxHeight: '80%',
+  overflowY: 'scroll',
   bgcolor: 'background.paper',
   border: '1px solid #000',
   boxShadow: 24,
