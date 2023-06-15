@@ -45,33 +45,48 @@ export default function Chat({ roomId }: Props) {
   }, []);
   return (
     <Wrapper>
-      <ChatWrapper>
+      <ChatWrapper id="chat">
         {chatData?.data.map((value) => (
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          <ChatBox {...value} />
+          <>
+            <ChatBox {...value} />
+          </>
         ))}
-        <div id="input">
-          <input
-            type="text"
-            value={inputData}
-            onChange={(e) => {
-              setInputData(e.currentTarget.value);
-            }}
-          />
-          <Button
-            onClick={() => {
-              sendMessage(inputData);
-              setInputData('');
-            }}
-            variant="contained"
-            size="large"
-            type="button"
-            color="info"
-          >
-            전송
-          </Button>
-        </div>
       </ChatWrapper>
+      <div id="input">
+        <input
+          type="text"
+          value={inputData}
+          onChange={(e) => {
+            setInputData(e.currentTarget.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              sendMessage(e.currentTarget.value);
+              setInputData('');
+              setTimeout(() => {
+                document.getElementById('chat').scrollTop =
+                  document.getElementById('chat').scrollHeight;
+              }, 500);
+            }
+          }}
+        />
+        <Button
+          onClick={() => {
+            sendMessage(inputData);
+            setInputData('');
+            setTimeout(() => {
+              document.getElementById('chat').scrollTop =
+                document.getElementById('chat').scrollHeight;
+            }, 500);
+          }}
+          variant="contained"
+          size="large"
+          type="button"
+          color="info"
+        >
+          전송
+        </Button>
+      </div>
     </Wrapper>
   );
 }
@@ -85,49 +100,41 @@ function ChatBox({
 }: ChatDataType) {
   return (
     <ChatBoxWrapper>
-      <div>
-        <Avatar aria-label="recipe">
-          <img src={profile_image} alt="" />
-        </Avatar>
-        {username}
-      </div>
+      <div>{username}</div>
       <p>{message}</p>
     </ChatBoxWrapper>
   );
 }
 
 const Wrapper = styled.div`
+  margin-top: 100px;
   display: flex;
+  width: 100%;
+  height: 300px;
   flex-direction: column;
-  > input {
-    height: 30px;
+  #input {
+    > input {
+      width: 88%;
+    }
+    background-color: white;
+    bottom: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
 `;
 
 const ChatWrapper = styled.div`
   border: 1px solid black;
-  width: 300px;
+  width: 100%;
   height: 500px;
   overflow-y: scroll;
   position: relative;
-  #input {
-    background-color: white;
-    position: sticky;
-    bottom: 0px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 420px;
-    > input {
-      width: 73%;
-    }
-  }
 `;
 
 const ChatBoxWrapper = styled.div`
-  border: 1px solid black;
-  border-radius: 5px;
   width: 100%;
+  border-bottom: 1px solid gray;
   display: flex;
   flex-direction: column;
   padding: 5px;
