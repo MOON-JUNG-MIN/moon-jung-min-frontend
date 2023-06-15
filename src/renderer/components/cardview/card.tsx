@@ -76,10 +76,16 @@ export default function RecipeReviewCard(props: BucketItem) {
 
   const [inputOpen, setInputOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
-  const { mutate: invite } = useMutation(() =>
-    instance.post('/member/' + id, {
-      email: inviteEmail,
-    })
+  const { mutate: invite } = useMutation(
+    () =>
+      instance.post('/member/' + id, {
+        email: inviteEmail,
+      }),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
   );
 
   return (
@@ -103,7 +109,7 @@ export default function RecipeReviewCard(props: BucketItem) {
           >
             {start_date} ~ {target_date}
           </Typography>
-          <form>
+          <form onSubmit={(e) => e.preventDefault()}>
             {inputOpen && (
               <Input
                 onChange={(e) => setInviteEmail(e.target.value)}
@@ -118,7 +124,6 @@ export default function RecipeReviewCard(props: BucketItem) {
                 if (!inputOpen) setInputOpen(true);
                 else {
                   invite();
-                  refetch();
                 }
               }}
             >
