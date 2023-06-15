@@ -113,7 +113,7 @@ export default function RecipeReviewCard(props: BucketItem) {
         isEnd={is_end}
         sx={{
           maxWidth: 345,
-          width: 300,
+          width: '100%',
           cursor: 'pointer',
         }}
         onClick={() => {

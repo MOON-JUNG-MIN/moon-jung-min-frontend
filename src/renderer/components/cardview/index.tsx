@@ -2,28 +2,30 @@ import { BucketItem } from 'atom/store';
 import styled from 'styled-components';
 import RecipeReviewCard from './card';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useMutation } from 'react-query';
 import { instance } from 'renderer/apis/axios';
-import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import RecipeReviewCard from './card';
+import { Button } from '@mui/material';
 
 export default function CardView() {
   const { data } = useQuery(['getList'], () =>
     instance.get<{ bucket_list: BucketItem[] }>('/bucket')
   );
 
-  useEffect(() => {
-    // eslint-disable-next-line promise/catch-or-return
-    instance
-      .get<{ bucket_list: BucketItem[] }>('/bucket')
-      .then((res) => setState(res.data.bucket_list));
-  }, [setState]);
-
   return (
-    <Wrapper>
-      <Link to="/write">버킷 생성하기</Link>
+    <Wrapper
+      style={{
+        padding: '15px',
+      }}
+    >
+      <Button
+        variant="contained"
+        style={{
+          display: 'block',
+          marginLeft: 'auto',
+        }}
+      >
+        <Link to="/write">버킷 생성하기</Link>
+      </Button>
       <CardGrid>
         {data?.data.bucket_list.map((value) => (
           <RecipeReviewCard
@@ -51,9 +53,9 @@ const Wrapper = styled.div`
 `;
 
 const CardGrid = styled.div`
-  padding: 15px;
-  display: flex;
-  flex-wrap: wrap;
+  padding: 15px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 36px;
 `;
 
