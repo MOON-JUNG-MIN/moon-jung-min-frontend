@@ -13,6 +13,8 @@ import {
   Modal,
   Box,
   css,
+  Input,
+  Button,
 } from '@mui/material';
 import { BucketItem } from 'atom/store';
 import { useState } from 'react';
@@ -72,8 +74,15 @@ export default function RecipeReviewCard(props: BucketItem) {
     }
   );
 
+  const [inputOpen, setInputOpen] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState('');
+  const { mutate: invite } = useMutation(() =>
+    instance.post('/member/' + id, {
+      email: inviteEmail,
+    })
+  );
+
   return (
-    // 모달 추가할 것
     <>
       <Modal
         open={modalOpen}
@@ -94,6 +103,28 @@ export default function RecipeReviewCard(props: BucketItem) {
           >
             {start_date} ~ {target_date}
           </Typography>
+          <form>
+            {inputOpen && (
+              <Input
+                onChange={(e) => setInviteEmail(e.target.value)}
+                value={inviteEmail}
+                style={{
+                  width: '300px',
+                }}
+              />
+            )}
+            <Button
+              onClick={() => {
+                if (!inputOpen) setInputOpen(true);
+                else {
+                  invite();
+                  refetch();
+                }
+              }}
+            >
+              친구 초대하기
+            </Button>
+          </form>
           <Typography
             component="pre"
             id="modal-modal-description"
@@ -109,7 +140,7 @@ export default function RecipeReviewCard(props: BucketItem) {
           <img
             src={image}
             alt=""
-            style={{ width: '100%', border: '1px solid black' }}
+            style={{ width: '100%', marginTop: '12px' }}
           />
           <Chat roomId={room_id} />
         </Box>
