@@ -38,7 +38,7 @@ export default function Chat({ roomId }: Props) {
       readChat(roomId).then((value) => {
         setData(value.data);
       });
-    }, 100);
+    }, 400);
     return () => {
       clearInterval(loop);
     };
